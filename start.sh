@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+# 限制 Node.js 堆内存为 256MB（Railway 免费实例上限约 512MB，给系统留 256MB）
+export NODE_OPTIONS="--max-old-space-size=256"
+
 # 1. 创建必要目录
 mkdir -p /data/workspace
 mkdir -p /root/.openclaw/agents/main/sessions
