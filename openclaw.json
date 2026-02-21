@@ -29,9 +29,9 @@
       "compaction": {
         "mode": "safeguard"
       },
-      "maxConcurrent": 4,
+      "maxConcurrent": 1,  // 降低并发数，从 4 改为 1
       "subagents": {
-        "maxConcurrent": 8
+        "maxConcurrent": 2  // 降低子代理并发，从 8 改为 2
       }
     }
   },
@@ -77,6 +77,7 @@
       "slack": {
         "enabled": true
       }
+      // 禁用其他所有插件（OpenClaw 默认加载很多，我们只留 slack）
     }
   }
 }
