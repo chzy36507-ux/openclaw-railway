@@ -61,7 +61,7 @@
     "bind": "0.0.0.0",
     "auth": {
       "mode": "token",
-      "token": "random-secure-token-here"
+      "token": "58dd2d5b2176ca47f3880ba5de600bbf271065136b96f437"
     }
   },
   "skills": {
