@@ -26,7 +26,7 @@
       "botToken": "",
       "appToken": "",
       "userTokenReadOnly": true,
-      "groupPolicy": "allowlist",
+      "groupPolicy": "everyone",
       "channels": {
         "U0AGQ1M461X": {}
       }
