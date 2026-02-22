@@ -34,6 +34,20 @@ if [ -n "$SLACK_APP_TOKEN" ]; then
   export SLACK_APP_TOKEN
 fi
 
+# 动态设置 Slack Token 到配置文件
+if [ -n "$SLACK_BOT_TOKEN" ] || [ -n "$SLACK_APP_TOKEN" ]; then
+  if [ -f /app/openclaw.template.json ]; then
+    # 使用 jq 或 sed 来替换 Token（这里使用简单的 sed）
+    if [ -n "$SLACK_BOT_TOKEN" ]; then
+      sed -i "s/\"botToken\": \"\"/\"botToken\": \"$SLACK_BOT_TOKEN\"/" /app/openclaw.template.json
+    fi
+    if [ -n "$SLACK_APP_TOKEN" ]; then
+      sed -i "s/\"appToken\": \"\"/\"appToken\": \"$SLACK_APP_TOKEN\"/" /app/openclaw.template.json
+    fi
+    cp /app/openclaw.template.json /root/.openclaw/openclaw.json
+  fi
+fi
+
 # 启动 Nginx 反向代理（后台）
 cat > /tmp/nginx.conf << 'EOF'
 events {

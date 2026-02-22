@@ -1,0 +1,51 @@
+{
+  "meta": {
+    "lastTouchedVersion": "2026.2.19-2",
+    "lastTouchedAt": "2026-02-21T08:47:59.979Z"
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "openrouter/free"
+      },
+      "workspace": "/data/workspace",
+      "compaction": {
+        "mode": "safeguard"
+      },
+      "maxConcurrent": 1,
+      "subagents": {
+        "maxConcurrent": 2
+      }
+    }
+  },
+  "channels": {
+    "slack": {
+      "mode": "socket",
+      "webhookPath": "/slack/events",
+      "enabled": true,
+      "botToken": "",
+      "appToken": "",
+      "userTokenReadOnly": true,
+      "groupPolicy": "open",
+      "channels": {
+        "U0AGQ1M461X": {}
+      }
+    }
+  },
+  "gateway": {
+    "port": 8080,
+    "mode": "local",
+    "trustedProxies": ["127.0.0.1", "::1", "0.0.0.0/0"],
+    "auth": {
+      "mode": "token",
+      "token": "58dd2d5b2176ca47f3880ba5de600bbf271065136b96f437"
+    }
+  },
+  "plugins": {
+    "entries": {
+      "slack": {
+        "enabled": true
+      }
+    }
+  }
+}
