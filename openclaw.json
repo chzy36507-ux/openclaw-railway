@@ -32,6 +32,7 @@
   },
   "gateway": {
     "port": 7860,
+    "host": "0.0.0.0",  // 修正：用 host 字段
     "mode": "local",
     "auth": {
       "mode": "token",

@@ -11,7 +11,8 @@ if [ ! -L /root/.openclaw ]; then
   ln -s /data/.openclaw /root/.openclaw
 fi
 
-python3 /app/sync.py restore
+# 暂时跳过恢复
+# python3 /app/sync.py restore
 
 if [ ! -f /root/.openclaw/openclaw.json ]; then
   cp /app/openclaw.json /root/.openclaw/openclaw.json
@@ -21,5 +22,5 @@ openclaw doctor --fix || true
 
 export NODE_OPTIONS="--max-old-space-size=1024"
 
-# 改为 serve 模式（前台运行）
-exec openclaw gateway serve --port 7860 --bind 0.0.0.0
+# 无参数启动
+exec openclaw gateway serve
