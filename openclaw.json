@@ -27,7 +27,9 @@
       "appToken": "",
       "userTokenReadOnly": true,
       "groupPolicy": "allowlist",
-      "channels": {}
+      "channels": {
+        "U0AGQ1M461X": {}
+      }
     }
   },
   "gateway": {
