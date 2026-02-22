@@ -6,7 +6,7 @@ from huggingface_hub import HfApi, hf_hub_download
 api = HfApi()
 repo_id = "yanscy/datalistnew"
 token = os.getenv("HF_TOKEN")
-FILENAME = "latest_backup.tar.gz"  # 先保持，后续再改
+FILENAME = "latest_backup.tar.gz"
 
 def restore():
     try:
@@ -16,9 +16,9 @@ def restore():
         
         print(f"Downloading {FILENAME} from {repo_id}...")
         path = hf_hub_download(
-            repo_id=repo_id, 
-            filename=FILENAME, 
-            repo_type="dataset", 
+            repo_id=repo_id,
+            filename=FILENAME,
+            repo_type="dataset",
             token=token
         )
         
