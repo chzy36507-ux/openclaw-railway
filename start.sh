@@ -45,19 +45,24 @@ fi
   sleep 30
   echo "Auto-approving Slack pairing requests..."
   for i in {1..30}; do
-    # 获取待批准的配对列表并自动批准
-    pending_list=$(openclaw pairing list slack 2>/dev/null)
-    echo "Pending list: $pending_list"
+    # 获取待批准的配对列表
+    pending_output=$(openclaw pairing list slack 2>/dev/null)
+    echo "Pending output:"
+    echo "$pending_output"
     
-    # 提取配对码（格式通常是: slack <code> pending）
-    echo "$pending_list" | grep "pending" | while read -r line; do
-      # 提取第二列作为配对码
-      code=$(echo "$line" | awk '{print $2}')
-      if [ -n "$code" ] && [ "$code" != "pending" ]; then
-        echo "Approving pairing code: $code"
-        openclaw pairing approve slack "$code" 2>/dev/null || true
-      fi
-    done
+    # 从表格格式中提取配对码（查找 Code 列的值）
+    # 格式：│ UQ4TCHPL │ U0AGQ1M461X │ {} │ 2026-02-22T... │
+    code=$(echo "$pending_output" | grep "│" | grep -v "Code" | grep -v "──────────" | awk -F '│' '{print $2}' | tr -d ' ')
+    
+    if [ -n "$code" ]; then
+      echo "Found pairing code: $code"
+      echo "Approving pairing code: $code"
+      openclaw pairing approve slack "$code" 2>&1
+      echo "Approval command executed."
+    else
+      echo "No pending pairing code found."
+    fi
+    
     sleep 5
   done
 ) &
