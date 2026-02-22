@@ -18,13 +18,20 @@ if [ ! -f /root/.openclaw/openclaw.json ]; then
   cp /app/openclaw.json /root/.openclaw/openclaw.json
 fi
 
+# 修正配置文件权限
+chmod 600 /root/.openclaw/openclaw.json
+chmod 700 /root/.openclaw
+
 openclaw doctor --fix || true
 
 export NODE_OPTIONS="--max-old-space-size=1024"
 
 # 启动 Nginx 反向代理（后台）
 cat > /tmp/nginx.conf << 'EOF'
-events {}
+events {
+    worker_connections 1024;
+}
+
 http {
     server {
         listen 0.0.0.0:7860;
@@ -38,6 +45,8 @@ http {
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_read_timeout 86400;
+            proxy_connect_timeout 60;
+            proxy_send_timeout 60;
         }
     }
 }
@@ -52,5 +61,8 @@ fi
 # 启动 nginx
 nginx -c /tmp/nginx.conf
 
-# 启动 OpenClaw 网关（无参数）
+echo "Nginx started on 0.0.0.0:7860"
+echo "Starting OpenClaw Gateway..."
+
+# 启动 OpenClaw 网关（完全无参数）
 exec openclaw gateway serve
