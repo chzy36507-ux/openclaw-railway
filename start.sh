@@ -26,14 +26,6 @@ openclaw doctor --fix || true
 
 export NODE_OPTIONS="--max-old-space-size=1024"
 
-# 设置 Slack Token 环境变量（从 HuggingFace Space 环境变量读取）
-if [ -n "$SLACK_BOT_TOKEN" ]; then
-  export SLACK_BOT_TOKEN
-fi
-if [ -n "$SLACK_APP_TOKEN" ]; then
-  export SLACK_APP_TOKEN
-fi
-
 # 动态设置 Slack Token 到配置文件
 if [ -n "$SLACK_BOT_TOKEN" ] || [ -n "$SLACK_APP_TOKEN" ]; then
   if [ -f /app/openclaw.template.json ]; then
@@ -47,6 +39,11 @@ if [ -n "$SLACK_BOT_TOKEN" ] || [ -n "$SLACK_APP_TOKEN" ]; then
     cp /app/openclaw.template.json /root/.openclaw/openclaw.json
   fi
 fi
+
+# 自动批准 Slack 配对
+echo "Auto-approving Slack pairing..."
+openclaw pairing approve slack 8TDVHB8L || true
+echo "Slack pairing approved."
 
 # 启动 Nginx 反向代理（后台）
 cat > /tmp/nginx.conf << 'EOF'
