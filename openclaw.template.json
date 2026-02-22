@@ -3,10 +3,19 @@
     "lastTouchedVersion": "2026.2.19-2",
     "lastTouchedAt": "2026-02-21T08:47:59.979Z"
   },
+  "models": {
+    "providers": {
+      "openrouter": {
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "apiKey": "",
+        "api": "openai-completions"
+      }
+    }
+  },
   "agents": {
     "defaults": {
       "model": {
-        "primary": "openrouter/free"
+        "primary": "openrouter/moonshotai/kimi-k2.5"
       },
       "workspace": "/data/workspace",
       "compaction": {

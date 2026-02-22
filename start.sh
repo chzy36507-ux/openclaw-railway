@@ -26,18 +26,20 @@ openclaw doctor --fix || true
 
 export NODE_OPTIONS="--max-old-space-size=1024"
 
-# 动态设置 Slack Token 到配置文件
-if [ -n "$SLACK_BOT_TOKEN" ] || [ -n "$SLACK_APP_TOKEN" ]; then
-  if [ -f /app/openclaw.template.json ]; then
-    # 使用 jq 或 sed 来替换 Token（这里使用简单的 sed）
-    if [ -n "$SLACK_BOT_TOKEN" ]; then
-      sed -i "s/\"botToken\": \"\"/\"botToken\": \"$SLACK_BOT_TOKEN\"/" /app/openclaw.template.json
-    fi
-    if [ -n "$SLACK_APP_TOKEN" ]; then
-      sed -i "s/\"appToken\": \"\"/\"appToken\": \"$SLACK_APP_TOKEN\"/" /app/openclaw.template.json
-    fi
-    cp /app/openclaw.template.json /root/.openclaw/openclaw.json
+# 动态设置 Slack Token 和 OpenRouter API Key 到配置文件
+if [ -f /app/openclaw.template.json ]; then
+  # 设置 Slack Token
+  if [ -n "$SLACK_BOT_TOKEN" ]; then
+    sed -i "s/\"botToken\": \"\"/\"botToken\": \"$SLACK_BOT_TOKEN\"/" /app/openclaw.template.json
   fi
+  if [ -n "$SLACK_APP_TOKEN" ]; then
+    sed -i "s/\"appToken\": \"\"/\"appToken\": \"$SLACK_APP_TOKEN\"/" /app/openclaw.template.json
+  fi
+  # 设置 OpenRouter API Key
+  if [ -n "$OPENROUTER_API_KEY" ]; then
+    sed -i "s/\"apiKey\": \"\"/\"apiKey\": \"$OPENROUTER_API_KEY\"/" /app/openclaw.template.json
+  fi
+  cp /app/openclaw.template.json /root/.openclaw/openclaw.json
 fi
 
 # 启动后台进程自动批准 Slack 配对请求
