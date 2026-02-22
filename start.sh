@@ -65,4 +65,4 @@ echo "Nginx started on 0.0.0.0:7860"
 echo "Starting OpenClaw Gateway..."
 
 # 启动 OpenClaw 网关（完全无参数）
-exec openclaw gateway serve
+exec openclaw gateway
