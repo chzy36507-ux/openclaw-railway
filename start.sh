@@ -44,16 +44,21 @@ fi
 (
   sleep 30
   echo "Auto-approving Slack pairing requests..."
-  for i in {1..10}; do
+  for i in {1..30}; do
     # 获取待批准的配对列表并自动批准
-    openclaw pairing list slack 2>/dev/null | while read line; do
-      if echo "$line" | grep -q "pending"; then
-        code=$(echo "$line" | awk '{print $NF}')
+    pending_list=$(openclaw pairing list slack 2>/dev/null)
+    echo "Pending list: $pending_list"
+    
+    # 提取配对码（格式通常是: slack <code> pending）
+    echo "$pending_list" | grep "pending" | while read -r line; do
+      # 提取第二列作为配对码
+      code=$(echo "$line" | awk '{print $2}')
+      if [ -n "$code" ] && [ "$code" != "pending" ]; then
         echo "Approving pairing code: $code"
         openclaw pairing approve slack "$code" 2>/dev/null || true
       fi
     done
-    sleep 10
+    sleep 5
   done
 ) &
 
