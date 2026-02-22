@@ -35,7 +35,7 @@
     "mode": "local",
     "trustedProxies": ["127.0.0.1", "::1", "0.0.0.0/0"],
     "auth": {
-      "mode": "public",
+      "mode": "token",
       "token": "58dd2d5b2176ca47f3880ba5de600bbf271065136b96f437"
     }
   },
