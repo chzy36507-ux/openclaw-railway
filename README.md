@@ -1,54 +1,49 @@
+---
 title: OpenClaw Gateway
-
-emoji: 🦞
-
 colorFrom: blue
-
 colorTo: purple
-
 sdk: docker
-
 pinned: false
+---
 
-OpenClaw HuggingFace Space
+# OpenClaw HuggingFace Space
 
 OpenClaw AI Agent Gateway on HuggingFace Spaces.
 
-Features
+## Features
 
-Gateway server with token authentication
-Slack integration support
-HuggingFace dataset backup/restore
-Nginx reverse proxy for external access
+- Gateway server with token authentication
+- Slack integration support
+- HuggingFace dataset backup/restore
+- Nginx reverse proxy for external access
 
-Environment Variables
+## Environment Variables
 
 Set these in your Space settings:
 
-HF_TOKEN: Your HuggingFace Access Token with write permissions (for backup/restore)
+- `HF_TOKEN`: Your HuggingFace Access Token with write permissions (for backup/restore)
 
-Configuration
+## Configuration
 
-Edit openclaw.json to customize:
+Edit `openclaw.json` to customize:
+- Gateway port (default: 7860)
+- Authentication token
+- Agent settings
+- Channel integrations
 
-Gateway port (default: 7860)
-Authentication token
-Agent settings
-Channel integrations
+## Deployment
 
-Deployment
+1. Configure environment variables
+2. Push code to HuggingFace Space
+3. Space will automatically rebuild with Docker
+4. Access via Space URL: `https://yanscy-openclaw.hf.space`
 
-Configure environment variables
-Push code to HuggingFace Space
-Space will automatically rebuild with Docker
-Access via Space URL: https://yanscy-openclaw.hf.space
+## Architecture
 
-Architecture
+- Nginx listens on `0.0.0.0:7860` (external)
+- OpenClaw Gateway listens on `127.0.0.1:7860` (internal)
+- Nginx proxies all requests to OpenClaw
 
-Nginx listens on 0.0.0.0:7860 (external)
-OpenClaw Gateway listens on 127.0.0.1:7860 (internal)
-Nginx proxies all requests to OpenClaw
-
-Logs
+## Logs
 
 Check Space logs for startup status and runtime information.
