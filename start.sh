@@ -40,8 +40,22 @@ if [ -n "$SLACK_BOT_TOKEN" ] || [ -n "$SLACK_APP_TOKEN" ]; then
   fi
 fi
 
-# 不需要自动批准配对，因为配置中已经设置了 groupPolicy: "open" 和用户白名单
-echo "Slack configured with open policy and user whitelist."
+# 启动后台进程自动批准 Slack 配对请求
+(
+  sleep 30
+  echo "Auto-approving Slack pairing requests..."
+  for i in {1..10}; do
+    # 获取待批准的配对列表并自动批准
+    openclaw pairing list slack 2>/dev/null | while read line; do
+      if echo "$line" | grep -q "pending"; then
+        code=$(echo "$line" | awk '{print $NF}')
+        echo "Approving pairing code: $code"
+        openclaw pairing approve slack "$code" 2>/dev/null || true
+      fi
+    done
+    sleep 10
+  done
+) &
 
 # 启动 Nginx 反向代理（后台）
 cat > /tmp/nginx.conf << 'EOF'
