@@ -28,9 +28,8 @@
       "userTokenReadOnly": true,
       "dmPolicy": "open",
       "groupPolicy": "open",
-      "channels": {
-        "U0AGQ1M461X": {}
-      }
+      "allowFrom": ["U0AGQ1M461X"],
+      "channels": {}
     }
   },
   "gateway": {
