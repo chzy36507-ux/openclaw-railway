@@ -35,7 +35,9 @@ events {
 http {
     server {
         listen 0.0.0.0:7860;
-        
+        server_name _;
+
+        # 代理 OpenClaw Web UI 和 WebSocket
         location / {
             proxy_pass http://127.0.0.1:8080;
             proxy_http_version 1.1;
@@ -44,6 +46,56 @@ http {
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_cache_bypass $http_upgrade;
+            proxy_read_timeout 86400;
+            proxy_connect_timeout 60;
+            proxy_send_timeout 60;
+        }
+
+        # WebSocket 连接路径
+        location /gateway {
+            proxy_pass http://127.0.0.1:8080;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_cache_bypass $http_upgrade;
+            proxy_read_timeout 86400;
+            proxy_connect_timeout 60;
+            proxy_send_timeout 60;
+        }
+
+        # 静态资源路径
+        location /__openclaw__/ {
+            proxy_pass http://127.0.0.1:8080;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_cache_bypass $http_upgrade;
+            proxy_read_timeout 86400;
+            proxy_connect_timeout 60;
+            proxy_send_timeout 60;
+        }
+
+        # Slack 事件订阅
+        location /slack/events {
+            proxy_pass http://127.0.0.1:8080;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_cache_bypass $http_upgrade;
             proxy_read_timeout 86400;
             proxy_connect_timeout 60;
             proxy_send_timeout 60;
