@@ -26,6 +26,14 @@ openclaw doctor --fix || true
 
 export NODE_OPTIONS="--max-old-space-size=1024"
 
+# 设置 Slack Token 环境变量（从 HuggingFace Space 环境变量读取）
+if [ -n "$SLACK_BOT_TOKEN" ]; then
+  export SLACK_BOT_TOKEN
+fi
+if [ -n "$SLACK_APP_TOKEN" ]; then
+  export SLACK_APP_TOKEN
+fi
+
 # 启动 Nginx 反向代理（后台）
 cat > /tmp/nginx.conf << 'EOF'
 events {
