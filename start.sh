@@ -1,14 +1,11 @@
 #!/bin/bash
 set -e
 
-# 限制 Node.js 堆内存为 256MB（Railway 免费实例上限约 512MB，给系统留 256MB）
-export NODE_OPTIONS="--max-old-space-size=256"
-
 # 1. 创建必要目录
 mkdir -p /data/workspace
-mkdir -p /root/.openclaw/agents/main/sessions
-mkdir -p /root/.openclaw/credentials
-mkdir -p /root/.openclaw/sessions
+mkdir -p /data/.openclaw/agents/main/sessions
+mkdir -p /data/.openclaw/credentials
+mkdir -p /data/.openclaw/sessions
 
 # 2. 将 .openclaw 软链接到 /data 以实现持久化
 if [ ! -L /root/.openclaw ]; then
@@ -16,12 +13,19 @@ if [ ! -L /root/.openclaw ]; then
   ln -s /data/.openclaw /root/.openclaw
 fi
 
-# 3. 初始化 OpenClaw（如果尚未初始化）
+# 3. 恢复历史数据（如果存在）—— 首次运行会失败，这是正常的
+python3 /app/sync.py restore
+
+# 4. 确保 openclaw.json 在正确的位置
 if [ ! -f /root/.openclaw/openclaw.json ]; then
-  openclaw init --non-interactive
-  # 复制我们的配置
   cp /app/openclaw.json /root/.openclaw/openclaw.json
 fi
 
-# 4. 启动 OpenClaw Gateway
-exec openclaw gateway start --port 3000 --bind 0.0.0.0
+# 5. 修复配置（自动修正错误）
+openclaw doctor --fix || true
+
+# 6. 限制 Node.js 内存（防止 OOM）
+export NODE_OPTIONS="--max-old-space-size=1024"
+
+# 7. 启动 OpenClaw Gateway
+exec openclaw gateway start --port 7860 --bind 0.0.0.0

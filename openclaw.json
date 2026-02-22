@@ -3,45 +3,20 @@
     "lastTouchedVersion": "2026.2.19-2",
     "lastTouchedAt": "2026-02-21T08:47:59.979Z"
   },
-  "env": {
-    "OPENROUTER_API_KEY": "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"
-  },
-  "wizard": {
-    "lastRunAt": "2026-02-18T13:43:56.400Z",
-    "lastRunVersion": "0.1.5-fix.2",
-    "lastRunCommand": "onboard",
-    "lastRunMode": "local"
-  },
-  "auth": {
-    "profiles": {
-      "opencode:default": {
-        "provider": "opencode",
-        "mode": "api_key"
-      }
-    }
-  },
   "agents": {
     "defaults": {
       "model": {
-        "primary": "openrouter/nvidia/nemotron-3-nano-30b-a3b:free"
+        "primary": "openrouter/free"
       },
       "workspace": "/data/workspace",
       "compaction": {
         "mode": "safeguard"
       },
-      "maxConcurrent": 1,  // 降低并发数，从 4 改为 1
+      "maxConcurrent": 1,
       "subagents": {
-        "maxConcurrent": 2  // 降低子代理并发，从 8 改为 2
+        "maxConcurrent": 2
       }
     }
-  },
-  "messages": {
-    "ackReactionScope": "group-mentions"
-  },
-  "commands": {
-    "native": "auto",
-    "nativeSkills": "auto",
-    "restart": true
   },
   "channels": {
     "slack": {
@@ -56,28 +31,18 @@
     }
   },
   "gateway": {
-    "port": 3000,
+    "port": 7860,
     "mode": "local",
-    "bind": "0.0.0.0",
     "auth": {
       "mode": "token",
       "token": "58dd2d5b2176ca47f3880ba5de600bbf271065136b96f437"
     }
   },
-  "skills": {
-    "install": {
-      "nodeManager": "npm"
-    }
-  },
   "plugins": {
     "entries": {
-      "minimax-portal-auth": {
-        "enabled": false
-      },
       "slack": {
         "enabled": true
       }
-      // 禁用其他所有插件（OpenClaw 默认加载很多，我们只留 slack）
     }
   }
 }

@@ -1,5 +1,0 @@
-[build]
-  builder = "docker"
-
-[scripts]
-  start = "/app/start.sh"
