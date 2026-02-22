@@ -32,7 +32,6 @@
   },
   "gateway": {
     "port": 8080,
-    "host": "0.0.0.0",
     "mode": "local",
     "auth": {
       "mode": "token",
